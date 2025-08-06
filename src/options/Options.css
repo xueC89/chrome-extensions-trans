@@ -1,0 +1,154 @@
+.options {
+  max-width: 800px;
+  margin: 0 auto;
+  padding: 20px;
+  background: white;
+  min-height: 100vh;
+}
+
+.options__header {
+  text-align: center;
+  margin-bottom: 40px;
+  padding-bottom: 20px;
+  border-bottom: 1px solid #e5e7eb;
+}
+
+.options__header h1 {
+  margin: 0 0 8px 0;
+  font-size: 28px;
+  font-weight: 700;
+  color: #111827;
+}
+
+.options__header p {
+  margin: 0;
+  color: #6b7280;
+  font-size: 16px;
+}
+
+.options__content {
+  display: flex;
+  flex-direction: column;
+  gap: 32px;
+}
+
+.options__message {
+  padding: 12px 16px;
+  background-color: #d1fae5;
+  color: #065f46;
+  border-radius: 6px;
+  border: 1px solid #a7f3d0;
+  font-size: 14px;
+  text-align: center;
+}
+
+.options__section {
+  background: #f9fafb;
+  border-radius: 8px;
+  padding: 24px;
+  border: 1px solid #e5e7eb;
+}
+
+.options__section h2 {
+  margin: 0 0 20px 0;
+  font-size: 20px;
+  font-weight: 600;
+  color: #111827;
+}
+
+.options__setting {
+  margin-bottom: 24px;
+}
+
+.options__setting:last-child {
+  margin-bottom: 0;
+}
+
+.options__label {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 8px;
+  font-weight: 500;
+  color: #374151;
+}
+
+.options__label input[type="checkbox"] {
+  width: 18px;
+  height: 18px;
+  accent-color: #3b82f6;
+}
+
+.options__label select,
+.options__label input[type="text"] {
+  padding: 8px 12px;
+  border: 1px solid #d1d5db;
+  border-radius: 6px;
+  font-size: 14px;
+  background: white;
+  color: #374151;
+  min-width: 200px;
+}
+
+.options__label select:focus,
+.options__label input[type="text"]:focus {
+  outline: none;
+  border-color: #3b82f6;
+  box-shadow: 0 0 0 2px rgba(59, 130, 246, 0.1);
+}
+
+.options__description {
+  margin: 0 0 0 30px;
+  font-size: 14px;
+  color: #6b7280;
+  line-height: 1.4;
+}
+
+.options__actions {
+  display: flex;
+  gap: 12px;
+  justify-content: center;
+}
+
+.options__loading {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  height: 400px;
+  color: #6b7280;
+}
+
+.spinner {
+  width: 32px;
+  height: 32px;
+  border: 3px solid #e5e7eb;
+  border-top: 3px solid #3b82f6;
+  border-radius: 50%;
+  animation: spin 1s linear infinite;
+  margin-bottom: 16px;
+}
+
+@keyframes spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+
+@media (max-width: 768px) {
+  .options {
+    padding: 16px;
+  }
+  
+  .options__section {
+    padding: 16px;
+  }
+  
+  .options__actions {
+    flex-direction: column;
+  }
+  
+  .options__label select,
+  .options__label input[type="text"] {
+    min-width: 150px;
+  }
+} 
