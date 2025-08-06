@@ -34,7 +34,7 @@ export const logError = (error: AppError | Error, context?: string): void => {
     message: error.message,
     code: 'code' in error ? error.code : undefined,
     details: 'details' in error ? error.details : undefined,
-    stack: error.stack,
+    stack: error || '',
     context,
     timestamp: new Date().toISOString()
   };

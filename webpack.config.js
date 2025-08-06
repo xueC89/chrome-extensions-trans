@@ -1,6 +1,7 @@
 const path = require('path');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const CopyWebpackPlugin = require('copy-webpack-plugin');
+const WebpackZipPlugin = require('./scripts/webpack-zip-plugin');
 
 module.exports = (env, argv) => {
   const isProduction = argv.mode === 'production';
@@ -51,7 +52,17 @@ module.exports = (env, argv) => {
         patterns: [
           { from: './public', to: './' }
         ]
-      })
+      }),
+      // 仅在生产模式下启用ZIP打包
+      // ...(isProduction ? [
+      //   new WebpackZipPlugin({
+      //     filename: 'react-chrome-extension',
+      //     outputPath: 'packages',
+      //     password: 'ChromeExt2024!', // 固定密码
+      //     includeChecksums: true,
+      //     compressionLevel: 9
+      //   })
+      // ] : [])
     ],
     devtool: isProduction ? false : 'cheap-module-source-map',
     optimization: {

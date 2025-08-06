@@ -58,7 +58,7 @@ const Options: React.FC = () => {
         notifications: true,
         customSetting: ''
       };
-      setSettings(defaultSettings);
+      setSettings(defaultSettings as Settings);
       await setStorage(defaultSettings);
       setMessage('设置已重置');
       setTimeout(() => setMessage(''), 3000);

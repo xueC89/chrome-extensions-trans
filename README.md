@@ -62,6 +62,13 @@ npm run dev
 npm run build
 ```
 
+### 打包和压缩
+
+```bash
+# 构建并创建ZIP压缩包（包含加密版本）
+npm run build:zip
+```
+
 ### 代码检查
 
 ```bash
@@ -120,9 +127,43 @@ npm run type-check
 
 - `dev`: 开发模式，支持热重载
 - `build`: 生产构建
+- `build:zip`: 生产构建并创建ZIP压缩包（包含加密版本）
 - `clean`: 清理构建目录
 - `type-check`: TypeScript 类型检查
 - `lint`: ESLint 代码检查
+
+## 打包功能
+
+### 自动压缩和加密
+
+生产构建时会自动创建以下文件：
+
+1. **普通压缩包**: `react-chrome-extension-[时间戳].zip`
+2. **加密压缩包**: `react-chrome-extension-encrypted-[时间戳].zip`
+3. **密码文件**: `password-[时间戳].txt` - 包含解压密码
+4. **校验文件**: `checksums-[时间戳].txt` - 包含SHA256校验值
+
+### 配置选项
+
+在 `webpack.config.js` 中可以自定义打包选项：
+
+```javascript
+new WebpackZipPlugin({
+  filename: 'react-chrome-extension',  // 压缩包名称
+  outputPath: 'packages',              // 输出目录
+  password: 'ChromeExt2024!',          // 固定加密密码
+  includeChecksums: true,              // 生成校验文件
+  compressionLevel: 9                  // 压缩级别 (1-9)
+})
+```
+
+### 默认加密密码
+
+当前使用的固定密码是：`ChromeExt2024!`
+
+如需修改密码，可以：
+1. 在 `webpack.config.js` 中修改 `password` 配置
+2. 在 `scripts/zip-package.js` 中修改固定密码值
 
 ## 注意事项
 

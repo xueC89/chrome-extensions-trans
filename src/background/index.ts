@@ -28,7 +28,7 @@ onMessage(async (message: ChromeMessage, sender) => {
     }
   } catch (error) {
     console.error('处理消息时出错:', error);
-    return { success: false, error: error.message };
+    return { success: false, error: error || '未知错误' };
   }
 });
 
