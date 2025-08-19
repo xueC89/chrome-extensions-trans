@@ -147,10 +147,10 @@ function showPopup(rect: DOMRect, text: string) {
   popupDiv.style.left = `${rect.left + window.scrollX}px`;
   popupDiv.style.top = `${rect.bottom + window.scrollY + 6}px`;
   
-  // 添加到页面
+  /** 添加到页面 */
   document.body.appendChild(popupDiv);
   
-  // 创建 React root 并渲染
+  /** 创建 React root 并渲染 */ 
   root = createRoot(popupDiv);
   root.render(<Popup text={text} />);
 }
@@ -166,7 +166,7 @@ const Popup: React.FC<{ text: string }> = ({ text }) => {
     setLoading(true);
     setError(false);
     
-    // 获取最新的目标语言
+    /** 获取最新的目标语言 */
     getTargetLanguage().then(lang => {
       setCurrentLang(lang);
       return googleTranslate(text, lang);
@@ -194,7 +194,7 @@ const Popup: React.FC<{ text: string }> = ({ text }) => {
   );
 };
 
-// 清理函数
+/** 清理函数 */
 window.addEventListener('beforeunload', () => {
   removePopup();
   clearTimeout(selectionTimeout);

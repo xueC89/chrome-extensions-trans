@@ -8,10 +8,11 @@ export default function Popup() {
   const [isEnabled, setIsEnabled] = React.useState(true);
 
   useEffect(() => {
-    // 获取存储的设置
+    /** 获取存储的设置 */
     chrome.storage.sync.get(['targetLang', 'translationEnabled'], (r) => {
       setLang(r.targetLang || 'zh-CN');
-      setIsEnabled(r.translationEnabled !== false); // 默认开启
+      /** 默认开启 */
+      setIsEnabled(r.translationEnabled !== false);
     });
   }, []);
 
@@ -20,7 +21,7 @@ export default function Popup() {
     setLang(newLang);
     chrome.storage.sync.set({ targetLang: newLang });
 
-    // 显示设置成功提示
+    /** 显示设置成功提示 */
     showStatus('语言设置已保存');
   };
 
@@ -29,10 +30,10 @@ export default function Popup() {
     setIsEnabled(enabled);
     chrome.storage.sync.set({ translationEnabled: enabled });
 
-    // 显示设置成功提示
+    /** 显示设置成功提示 */
     showStatus(enabled ? '翻译功能已开启' : '翻译功能已关闭');
 
-    // 通知 content script 更新状态
+    /** 通知 content script 更新状态 */
     chrome.tabs.query({ active: true, currentWindow: true }, (tabs) => {
       if (tabs[0]?.id) {
         chrome.tabs.sendMessage(tabs[0].id, {
