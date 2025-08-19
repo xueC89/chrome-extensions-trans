@@ -1,7 +1,6 @@
 const path = require('path');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const CopyWebpackPlugin = require('copy-webpack-plugin');
-const WebpackZipPlugin = require('./scripts/webpack-zip-plugin');
 
 module.exports = (env, argv) => {
   const isProduction = argv.mode === 'production';
@@ -28,11 +27,34 @@ module.exports = (env, argv) => {
         {
           test: /\.css$/,
           use: ['style-loader', 'css-loader']
+        },
+        // SCSS Modules: *.module.scss / *.module.sass
+        {
+          test: /\.module\.(scss|sass)$/,
+          use: [
+            'style-loader',
+            {
+              loader: 'css-loader',
+              options: {
+                modules: {
+                  localIdentName: isProduction ? '[hash:base64:6]' : '[path][name]__[local]--[hash:base64:5]'
+                },
+                importLoaders: 1
+              }
+            },
+            'sass-loader'
+          ]
+        },
+        // Global SCSS
+        {
+          test: /\.(scss|sass)$/,
+          exclude: /\.module\.(scss|sass)$/,
+          use: ['style-loader', 'css-loader', 'sass-loader']
         }
       ]
     },
     resolve: {
-      extensions: ['.tsx', '.ts', '.js'],
+      extensions: ['.tsx', '.ts', '.js', '.scss', '.sass'],
       alias: {
         '@': path.resolve(__dirname, 'src')
       }
@@ -53,16 +75,6 @@ module.exports = (env, argv) => {
           { from: './public', to: './' }
         ]
       }),
-      // 仅在生产模式下启用ZIP打包
-      // ...(isProduction ? [
-      //   new WebpackZipPlugin({
-      //     filename: 'react-chrome-extension',
-      //     outputPath: 'packages',
-      //     password: 'ChromeExt2024!', // 固定密码
-      //     includeChecksums: true,
-      //     compressionLevel: 9
-      //   })
-      // ] : [])
     ],
     devtool: isProduction ? false : 'cheap-module-source-map',
     optimization: {

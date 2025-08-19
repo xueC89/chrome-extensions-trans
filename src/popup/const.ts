@@ -1,0 +1,17 @@
+export const langs = [
+  { key: 'zh-CN', name: '简体中文' },
+  { key: 'zh-TW', name: '繁體中文' },
+  { key: 'en', name: 'English' },
+  { key: 'ja', name: '日本語' },
+  { key: 'ko', name: '한국어' },
+  { key: 'fr', name: 'Français' },
+  { key: 'de', name: 'Deutsch' },
+  { key: 'es', name: 'Español' },
+  { key: 'pt', name: 'Português' },
+  { key: 'it', name: 'Italiano' },
+  { key: 'ru', name: 'Русский' },
+  { key: 'ar', name: 'العربية' },
+  { key: 'hi', name: 'हिन्दी' },
+  { key: 'th', name: 'ไทย' },
+  { key: 'vi', name: 'Tiếng Việt' },
+];

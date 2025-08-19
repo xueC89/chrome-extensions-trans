@@ -1,0 +1,88 @@
+.popupContainer {
+  padding: 16px;
+}
+
+.popupTitle {
+  margin: 0 0 16px 0;
+  font-size: 14px;
+  color: #333;
+  text-align: center;
+}
+
+.popupCard {
+  margin-bottom: 16px;
+  padding: 12px;
+  background-color: #f8f9fa;
+  border-radius: 6px;
+}
+
+.popupCardHeader {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 8px;
+}
+
+.popupCardLabel {
+  font-size: 13px;
+  color: #333;
+  font-weight: 500;
+}
+
+.toggleWrap {
+  position: relative;
+}
+
+.popupCardDesc {
+  font-size: 11px;
+  color: #666;
+  text-align: center;
+}
+
+.formGroup {
+  margin-bottom: 16px;
+}
+
+.formLabel {
+  display: block;
+  margin-bottom: 8px;
+  font-size: 12px;
+  color: #666;
+}
+
+.formSelect {
+  width: 100%;
+  padding: 8px 10px;
+  border: 1px solid #ddd;
+  border-radius: 6px;
+  font-size: 12px;
+  background-color: #fff;
+  color: #333;
+}
+
+.status {
+  display: none;
+  font-size: 11px;
+  color: #4CAF50;
+  text-align: center;
+  padding: 6px;
+  background-color: #E8F5E8;
+  border-radius: 4px;
+  margin-bottom: 12px;
+}
+
+.helpBox {
+  font-size: 10px;
+  color: #999;
+  text-align: center;
+  padding: 8px;
+  background-color: #f8f9fa;
+  border-radius: 4px;
+  border: 1px solid #e9ecef;
+}
+
+.helpBoxTitle {
+  margin-bottom: 4px;
+}
+
+
