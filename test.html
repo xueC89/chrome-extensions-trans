@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Content Script Test</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 800px;
+            margin: 50px auto;
+            padding: 20px;
+            line-height: 1.6;
+        }
+        .test-text {
+            background: #f0f0f0;
+            padding: 20px;
+            margin: 20px 0;
+            border-radius: 8px;
+        }
+        .highlight {
+            background: yellow;
+            padding: 2px 4px;
+        }
+    </style>
+</head>
+<body>
+    <h1>Content Script 测试页面</h1>
+    
+    <div class="test-text">
+        <p>这是一个测试段落，你可以选中其中的文字来测试翻译功能。</p>
+        <p>This is a test paragraph in English. You can select text to test the translation feature.</p>
+        <p>Ceci est un paragraphe de test en français. Vous pouvez sélectionner du texte pour tester la fonction de traduction.</p>
+    </div>
+    
+    <div class="test-text">
+        <h3>使用说明：</h3>
+        <ol>
+            <li>选中上面的任意文字</li>
+            <li>应该会出现一个翻译弹窗</li>
+            <li>弹窗会显示选中文字的翻译结果</li>
+        </ol>
+    </div>
+    
+    <div class="test-text">
+        <p>更多测试文字：</p>
+        <p>Hello world, this is a simple test.</p>
+        <p>你好世界，这是一个简单的测试。</p>
+        <p>Bonjour le monde, c'est un test simple.</p>
+    </div>
+    
+    <script>
+        // 添加一些交互功能
+        document.addEventListener('DOMContentLoaded', function() {
+            console.log('测试页面已加载');
+            
+            // 添加点击高亮功能
+            document.querySelectorAll('p').forEach(p => {
+                p.addEventListener('click', function() {
+                    this.classList.toggle('highlight');
+                });
+            });
+        });
+    </script>
+</body>
+</html>

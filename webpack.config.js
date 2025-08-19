@@ -11,7 +11,7 @@ module.exports = (env, argv) => {
       popup: './src/popup/index.tsx',
       content: './src/content/index.tsx',
       background: './src/background/index.ts',
-      options: './src/options/index.tsx'
+      // options: './src/options/index.tsx'
     },
     output: {
       path: path.resolve(__dirname, 'dist'),
@@ -43,11 +43,11 @@ module.exports = (env, argv) => {
         filename: 'popup.html',
         chunks: ['popup']
       }),
-      new HtmlWebpackPlugin({
-        template: './src/options/options.html',
-        filename: 'options.html',
-        chunks: ['options']
-      }),
+      // new HtmlWebpackPlugin({
+      //   template: './src/options/options.html',
+      //   filename: 'options.html',
+      //   chunks: ['options']
+      // }),
       new CopyWebpackPlugin({
         patterns: [
           { from: './public', to: './' }
@@ -66,8 +66,26 @@ module.exports = (env, argv) => {
     ],
     devtool: isProduction ? false : 'cheap-module-source-map',
     optimization: {
+      minimize: isProduction ? undefined : true,
       splitChunks: {
-        chunks: 'all'
+        chunks: (chunk) => {
+          // content script 不参与代码分割，保持独立
+          if (chunk.name === 'content') {
+            return false;
+          }
+          return 'all';
+        },
+        cacheGroups: {
+          // 其他代码可以分割
+          vendor: {
+            test: /[\\/]node_modules[\\/]/,
+            name: 'vendor',
+            chunks: (chunk) => {
+              // vendor 不包含 content
+              return chunk.name !== 'content';
+            }
+          }
+        }
       }
     }
   };
