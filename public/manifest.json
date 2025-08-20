@@ -5,7 +5,8 @@
   "description": "A Chrome extension built with React and TypeScript",
   "permissions": [
     "storage",
-    "activeTab"
+    "activeTab",
+    "contextMenus"
   ],
   "host_permissions": [
     "<all_urls>"

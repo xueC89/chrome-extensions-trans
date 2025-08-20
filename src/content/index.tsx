@@ -49,11 +49,10 @@ chrome.storage.onChanged.addListener((changes, namespace) => {
   }
 });
 
-// 监听来自 popup 的消息
+// 监听来自 popup 的消息， 监听来自 background script 的右键菜单消息
 chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
   if (message.type === 'TRANSLATION_TOGGLED') {
     translationEnabled = message.enabled;
-    console.log('Translation toggled:', translationEnabled);
     
     // 如果关闭翻译功能，移除现有弹窗
     if (!translationEnabled && popupDiv) {

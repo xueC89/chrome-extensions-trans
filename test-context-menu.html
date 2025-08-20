@@ -1,0 +1,254 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>右键菜单功能测试</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 800px;
+            margin: 50px auto;
+            padding: 20px;
+            line-height: 1.6;
+        }
+        .test-section {
+            background: #f8f9fa;
+            padding: 20px;
+            margin: 20px 0;
+            border-radius: 8px;
+            border-left: 4px solid #007bff;
+        }
+        .feature-title {
+            color: #007bff;
+            font-weight: bold;
+            margin-bottom: 15px;
+            font-size: 18px;
+        }
+        .test-text {
+            background: white;
+            padding: 15px;
+            margin: 10px 0;
+            border-radius: 6px;
+            border: 1px solid #e9ecef;
+        }
+        .instructions {
+            background: #e7f3ff;
+            padding: 20px;
+            border-radius: 8px;
+            border: 1px solid #b3d9ff;
+        }
+        .step {
+            margin: 10px 0;
+            padding: 8px 0;
+        }
+        .step-number {
+            background: #007bff;
+            color: white;
+            border-radius: 50%;
+            width: 24px;
+            height: 24px;
+            display: inline-block;
+            text-align: center;
+            line-height: 24px;
+            margin-right: 12px;
+            font-size: 14px;
+            font-weight: bold;
+        }
+        .context-menu-test {
+            background: #fff3cd;
+            padding: 20px;
+            border-radius: 8px;
+            border: 1px solid #ffeaa7;
+            margin: 20px 0;
+        }
+        .context-menu-instructions {
+            background: #d4edda;
+            padding: 15px;
+            border-radius: 6px;
+            border: 1px solid #c3e6cb;
+            margin: 15px 0;
+        }
+        .status-indicator {
+            display: inline-block;
+            padding: 4px 8px;
+            border-radius: 4px;
+            font-size: 12px;
+            font-weight: bold;
+            margin-left: 10px;
+        }
+        .status-enabled {
+            background: #d4edda;
+            color: #155724;
+            border: 1px solid #c3e6cb;
+        }
+        .status-disabled {
+            background: #f8d7da;
+            color: #721c24;
+            border: 1px solid #f5c6cb;
+        }
+        .highlight-box {
+            background: #f8f9fa;
+            border: 2px dashed #007bff;
+            padding: 15px;
+            margin: 15px 0;
+            border-radius: 6px;
+            text-align: center;
+        }
+    </style>
+</head>
+<body>
+    <h1>🔌 右键菜单功能测试页面</h1>
+    
+    <div class="instructions">
+        <h3>📋 功能说明</h3>
+        <div class="step">
+            <span class="step-number">1</span>
+            在页面任意位置右键，查看 MiniTrans 翻译菜单
+        </div>
+        <div class="step">
+            <span class="step-number">2</span>
+            使用右键菜单开启/关闭翻译功能
+        </div>
+        <div class="step">
+            <span class="step-number">3</span>
+            测试不同状态下的文字选择行为
+        </div>
+        <div class="step">
+            <span class="step-number">4</span>
+            观察右键菜单状态与 popup 设置的同步
+        </div>
+    </div>
+
+    <div class="context-menu-test">
+        <h3>🎛️ 右键菜单测试</h3>
+        <div class="context-menu-instructions">
+            <strong>测试步骤：</strong>
+            <ol>
+                <li>在页面任意位置右键，选择 "🌍 MiniTrans 翻译"</li>
+                <li>在子菜单中选择 "翻译功能" → "开启翻译" 或 "关闭翻译"</li>
+                <li>观察菜单项状态变化（当前状态会显示标记）</li>
+                <li>尝试选中下面的文字，验证翻译功能状态</li>
+                <li>在扩展 popup 中切换开关，观察右键菜单同步更新</li>
+            </ol>
+        </div>
+        
+        <div style="text-align: center; margin: 20px 0;">
+            <span style="font-size: 14px; color: #666;">当前状态：</span>
+            <span id="current-status" class="status-indicator status-enabled">翻译功能已开启</span>
+        </div>
+    </div>
+
+    <div class="highlight-box">
+        <h4>💡 右键菜单位置</h4>
+        <p>在页面任意位置右键，你会看到 "🌍 MiniTrans 翻译" 菜单</p>
+        <p>菜单包含：翻译功能开关、设置选项等</p>
+    </div>
+
+    <div class="test-section">
+        <div class="feature-title">🇨🇳 中文测试文字</div>
+        <div class="test-text">
+            <p>这是一段中文测试文字，你可以选中它来测试翻译功能。</p>
+            <p>当翻译功能开启时，选中文字会显示翻译弹窗。</p>
+            <p>当翻译功能关闭时，选中文字不会有任何反应。</p>
+            <p>你可以通过右键菜单或扩展 popup 来控制翻译功能的开启/关闭。</p>
+        </div>
+    </div>
+
+    <div class="test-section">
+        <div class="feature-title">🇺🇸 English Test Text</div>
+        <div class="test-text">
+            <p>This is an English test paragraph for testing the translation feature.</p>
+            <p>When translation is enabled, selecting text will show a translation popup.</p>
+            <p>When translation is disabled, selecting text will have no effect.</p>
+            <p>You can control the translation feature through the context menu or extension popup.</p>
+        </div>
+    </div>
+
+    <div class="test-section">
+        <div class="feature-title">🇯🇵 日本語テスト</div>
+        <div class="test-text">
+            <p>これは翻訳機能をテストするための日本語のテスト段落です。</p>
+            <p>翻訳が有効な場合、テキストを選択すると翻訳ポップアップが表示されます。</p>
+            <p>翻訳が無効な場合、テキストを選択しても何も起こりません。</p>
+            <p>右クリックメニューまたは拡張機能のポップアップで翻訳機能を制御できます。</p>
+        </div>
+    </div>
+
+    <div class="test-section">
+        <div class="feature-title">💡 功能特性</div>
+        <div class="test-text">
+            <ul>
+                <li><strong>右键菜单：</strong> 在任何页面右键即可访问翻译控制</li>
+                <li><strong>状态同步：</strong> 右键菜单与 popup 设置实时同步</li>
+                <li><strong>智能状态：</strong> 菜单项显示当前翻译功能状态</li>
+                <li><strong>即时生效：</strong> 通过右键菜单切换立即生效</li>
+                <li><strong>跨标签页：</strong> 设置在所有标签页中同步</li>
+                <li><strong>状态持久化：</strong> 设置保存到 Chrome 存储中</li>
+            </ul>
+        </div>
+    </div>
+
+    <div class="test-section">
+        <div class="feature-title">🔧 使用方法</div>
+        <div class="test-text">
+            <h4>方法一：右键菜单</h4>
+            <ol>
+                <li>在页面任意位置右键</li>
+                <li>选择 "🌍 MiniTrans 翻译" → "翻译功能"</li>
+                <li>选择 "开启翻译" 或 "关闭翻译"</li>
+            </ol>
+            
+            <h4>方法二：扩展 Popup</h4>
+            <ol>
+                <li>点击浏览器工具栏中的扩展图标</li>
+                <li>在弹窗中使用开关控制翻译功能</li>
+                <li>设置会自动同步到右键菜单</li>
+            </ol>
+            
+            <h4>方法三：快捷键（可选）</h4>
+            <ol>
+                <li>可以在扩展设置中配置快捷键</li>
+                <li>快速切换翻译功能状态</li>
+            </ol>
+        </div>
+    </div>
+
+    <script>
+        // 模拟状态更新（实际状态由扩展控制）
+        document.addEventListener('DOMContentLoaded', function() {
+            console.log('右键菜单测试页面已加载');
+            
+            // 为测试文字添加点击高亮功能
+            document.querySelectorAll('.test-text p').forEach(p => {
+                p.addEventListener('click', function() {
+                    this.style.backgroundColor = '#fff3cd';
+                    this.style.border = '2px solid #ffc107';
+                    setTimeout(() => {
+                        this.style.backgroundColor = '';
+                        this.style.border = '';
+                    }, 2000);
+                });
+            });
+            
+            // 模拟状态变化（仅用于演示）
+            let isEnabled = true;
+            const statusElement = document.getElementById('current-status');
+            
+            // 每15秒切换一次状态（仅用于演示）
+            setInterval(() => {
+                isEnabled = !isEnabled;
+                if (statusElement) {
+                    if (isEnabled) {
+                        statusElement.textContent = '翻译功能已开启';
+                        statusElement.className = 'status-indicator status-enabled';
+                    } else {
+                        statusElement.textContent = '翻译功能已关闭';
+                        statusElement.className = 'status-indicator status-disabled';
+                    }
+                }
+            }, 15000);
+        });
+    </script>
+</body>
+</html>

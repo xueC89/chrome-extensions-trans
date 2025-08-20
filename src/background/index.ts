@@ -1,113 +1,222 @@
-// import { ChromeMessage } from '@/types';
-// import { onMessage, getStorage, setStorage } from '@/utils/chrome';
+// 初始化后台脚本
+console.log('Chrome Extension Background Script 已启动');
 
-// // 初始化后台脚本
-// console.log('Chrome Extension Background Script 已启动');
+// 创建右键菜单
+function createContextMenus() {
+  // 移除现有菜单
+  chrome.contextMenus.removeAll(() => {
+    // 创建主菜单
+    chrome.contextMenus.create({
+      id: 'minitrans-main',
+      title: '🌍 MiniTrans 翻译',
+      contexts: ['all']
+    });
 
-// // 监听来自其他部分的消息
-// onMessage(async (message: ChromeMessage, sender) => {
-//   try {
-//     console.log('收到消息:', message, '来自:', sender);
+    // 创建翻译开关子菜单
+    chrome.contextMenus.create({
+      id: 'minitrans-toggle',
+      parentId: 'minitrans-main',
+      title: '翻译功能',
+      contexts: ['all']
+    });
 
-//     switch (message.type) {
-//       case 'EXTENSION_TOGGLED':
-//         await handleExtensionToggle(message.data);
-//         break;
-      
-//       case 'GET_STORAGE_DATA':
-//         const data = await getStorage(message.data?.keys);
-//         return { success: true, data };
-      
-//       case 'SET_STORAGE_DATA':
-//         await setStorage(message.data);
-//         return { success: true };
-      
-//       default:
-//         console.warn('未知消息类型:', message.type);
-//         return { success: false, error: '未知消息类型' };
-//     }
-//   } catch (error) {
-//     console.error('处理消息时出错:', error);
-//     return { success: false, error: error || '未知错误' };
-//   }
-// });
+    // 创建开启翻译选项
+    chrome.contextMenus.create({
+      id: 'minitrans-enable',
+      parentId: 'minitrans-toggle',
+      title: '✅ 开启翻译',
+      contexts: ['all']
+    });
 
-// // 处理扩展开关状态变化
-// const handleExtensionToggle = async (data: { isEnabled: boolean }) => {
-//   console.log('扩展状态变化:', data.isEnabled);
+    // 创建关闭翻译选项
+    chrome.contextMenus.create({
+      id: 'minitrans-disable',
+      parentId: 'minitrans-toggle',
+      title: '❌ 关闭翻译',
+      contexts: ['all']
+    });
+
+    // 创建分隔线
+    chrome.contextMenus.create({
+      id: 'minitrans-separator',
+      parentId: 'minitrans-main',
+      type: 'separator',
+      contexts: ['all']
+    });
+
+    // 创建设置选项
+    chrome.contextMenus.create({
+      id: 'minitrans-settings',
+      parentId: 'minitrans-main',
+      title: '⚙️ 打开设置',
+      contexts: ['all']
+    });
+
+    console.log('右键菜单已创建');
+  });
+}
+
+// 处理右键菜单点击事件
+function handleContextMenuClick(info: chrome.contextMenus.OnClickData, tab?: chrome.tabs.Tab) {
+  console.log('右键菜单点击:', info.menuItemId);
+
+  switch (info.menuItemId) {
+    case 'minitrans-enable':
+      enableTranslation(tab);
+      break;
+    case 'minitrans-disable':
+      disableTranslation(tab);
+      break;
+    case 'minitrans-settings':
+      openSettings();
+      break;
+    default:
+      console.log('未知菜单项:', info.menuItemId);
+  }
+}
+
+// 开启翻译功能
+async function enableTranslation(tab?: chrome.tabs.Tab) {
+  try {
+    // 保存设置到存储
+    await chrome.storage.sync.set({ translationEnabled: true });
+    console.log('翻译功能已开启');
+
+    // 通知当前标签页
+    if (tab?.id) {
+      await chrome.tabs.sendMessage(tab.id, {
+        type: 'TRANSLATION_TOGGLED',
+        enabled: true
+      });
+    }
+
+    // 更新菜单状态
+    updateContextMenuState(true);
+  } catch (error) {
+    console.error('开启翻译功能失败:', error);
+  }
+}
+
+// 关闭翻译功能
+async function disableTranslation(tab?: chrome.tabs.Tab) {
+  try {
+    // 保存设置到存储
+    await chrome.storage.sync.set({ translationEnabled: false });
+    console.log('翻译功能已关闭');
+
+    // 通知当前标签页
+    if (tab?.id) {
+      await chrome.tabs.sendMessage(tab.id, {
+        type: 'TRANSLATION_TOGGLED',
+        enabled: false
+      });
+    }
+
+    // 更新菜单状态
+    updateContextMenuState(false);
+  } catch (error) {
+    console.error('关闭翻译功能失败:', error);
+  }
+}
+
+// 打开设置页面
+function openSettings() {
+  // 打开 popup 或设置页面
+  chrome.action.openPopup();
+}
+
+// 更新右键菜单状态
+async function updateContextMenuState(isEnabled: boolean) {
+  try {
+    // 更新开启/关闭菜单项的标题
+    chrome.contextMenus.update('minitrans-enable', {
+      title: isEnabled ? '✅ 开启翻译 (当前状态)' : '✅ 开启翻译'
+    });
+
+    chrome.contextMenus.update('minitrans-disable', {
+      title: isEnabled ? '❌ 关闭翻译' : '❌ 关闭翻译 (当前状态)'
+    });
+  } catch (error) {
+    console.error('更新右键菜单状态失败:', error);
+  }
+}
+
+// 监听右键菜单点击事件
+chrome.contextMenus.onClicked.addListener(handleContextMenuClick);
+
+// 监听扩展安装事件
+chrome.runtime.onInstalled.addListener((details) => {
+  console.log('扩展已安装:', details);
   
-//   // 这里可以添加状态变化时的逻辑
-//   // 例如通知所有标签页、更新图标等
+  // 创建右键菜单
+  createContextMenus();
   
-//   // 通知所有标签页状态变化
-//   const tabs = await chrome.tabs.query({});
-//   for (const tab of tabs) {
-//     if (tab.id) {
-//       try {
-//         await chrome.tabs.sendMessage(tab.id, {
-//           type: 'EXTENSION_STATE_CHANGED',
-//           data: { isEnabled: data.isEnabled }
-//         });
-//       } catch (error) {
-//         // 忽略无法发送消息的标签页（例如chrome://页面）
-//         console.debug('无法发送消息到标签页:', tab.id, error);
-//       }
-//     }
-//   }
-// };
+  // 初始化默认设置
+  initializeDefaultSettings();
+});
 
-// // 监听扩展安装事件
-// chrome.runtime.onInstalled.addListener((details) => {
-//   console.log('扩展已安装:', details);
+// 监听扩展更新事件
+chrome.runtime.onUpdateAvailable.addListener(() => {
+  console.log('扩展更新可用');
+  chrome.runtime.reload();
+});
+
+// 初始化默认设置
+async function initializeDefaultSettings() {
+  try {
+    const result = await chrome.storage.sync.get(['translationEnabled', 'targetLang']);
+    
+    // 设置默认值
+    const defaultSettings = {
+      translationEnabled: true, // 默认开启翻译
+      targetLang: 'zh-CN',     // 默认目标语言
+      ...result
+    };
+    
+    await chrome.storage.sync.set(defaultSettings);
+    console.log('默认设置已初始化:', defaultSettings);
+    
+    // 更新菜单状态
+    updateContextMenuState(defaultSettings.translationEnabled);
+  } catch (error) {
+    console.error('初始化默认设置失败:', error);
+  }
+}
+
+// 监听存储变化
+chrome.storage.onChanged.addListener((changes, namespace) => {
+  if (namespace === 'sync' && changes.translationEnabled) {
+    const isEnabled = changes.translationEnabled.newValue !== false;
+    console.log('翻译功能状态变化:', isEnabled);
+    
+    // 更新菜单状态
+    updateContextMenuState(isEnabled);
+  }
+});
+
+// 监听来自 popup 或 content script 的消息
+chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
+  console.log('收到消息:', message, '来自:', sender);
   
-//   // 初始化默认设置
-//   initializeDefaultSettings();
-// });
-
-// // 监听扩展更新事件
-// chrome.runtime.onUpdateAvailable.addListener(() => {
-//   console.log('扩展更新可用');
-//   chrome.runtime.reload();
-// });
-
-// // 初始化默认设置
-// const initializeDefaultSettings = async () => {
-//   try {
-//     const settings = await getStorage();
-    
-//     // 设置默认值
-//     const defaultSettings = {
-//       isEnabled: false,
-//       theme: 'light',
-//       autoSave: true,
-//       ...settings
-//     };
-    
-//     await setStorage(defaultSettings);
-//     console.log('默认设置已初始化');
-//   } catch (error) {
-//     console.error('初始化默认设置失败:', error);
-//   }
-// };
-
-// // 监听标签页更新事件
-// chrome.tabs.onUpdated.addListener((tabId, changeInfo, tab) => {
-//   if (changeInfo.status === 'complete' && tab.url) {
-//     console.log('标签页已加载完成:', tab.url);
-    
-//     // 这里可以添加页面加载完成后的逻辑
-//     // 例如注入内容脚本、检查页面状态等
-//   }
-// });
-
-// // 监听标签页激活事件
-// chrome.tabs.onActivated.addListener(async (activeInfo) => {
-//   try {
-//     const tab = await chrome.tabs.get(activeInfo.tabId);
-//     console.log('标签页已激活:', tab.url);
-    
-//     // 这里可以添加标签页激活时的逻辑
-//   } catch (error) {
-//     console.error('获取激活标签页信息失败:', error);
-//   }
-// }); 
+  switch (message.type) {
+    case 'GET_TRANSLATION_STATE':
+      // 获取翻译功能状态
+      chrome.storage.sync.get(['translationEnabled'], (result) => {
+        sendResponse({ 
+          success: true, 
+          enabled: result.translationEnabled !== false 
+        });
+      });
+      return true; // 保持消息通道开放
+      
+    case 'UPDATE_CONTEXT_MENU':
+      // 更新右键菜单状态
+      updateContextMenuState(message.enabled);
+      sendResponse({ success: true });
+      break;
+      
+    default:
+      console.log('未知消息类型:', message.type);
+      sendResponse({ success: false, error: '未知消息类型' });
+  }
+}); 

@@ -42,6 +42,12 @@ export default function Popup() {
         });
       }
     });
+
+    /** 通知 background script 更新右键菜单状态 */
+    chrome.runtime.sendMessage({
+      type: 'UPDATE_CONTEXT_MENU',
+      enabled: enabled
+    });
   };
 
   const showStatus = (message: string) => {
